@@ -1,0 +1,66 @@
+string cellValue = AddressAnalizator(dataGridView.CurrentCell.Value.ToString());
+            string cellName = dataGridView.CurrentCell.ColumnIndex.ToString() + "." + dataGridView.CurrentCell.RowIndex.ToString();
+
+            hashtable[cellName] = cellValue;
+
+            string check = "";
+            foreach(DictionaryEntry elem in hashtable)
+            {
+                if (hashtable.Contains(elem.Value.ToString()))
+                {
+                    if (queue.Count != 0 && check.Equals(hashtable[elem.Value.ToString()].ToString())
+                        || queue.Count == 0)
+                    {
+                        queue.Enqueue(elem.Key.ToString());
+                        queue.Enqueue(elem.Value.ToString());
+                        queue.Enqueue(hashtable[elem.Value.ToString()].ToString());
+                        check = hashtable[elem.Value.ToString()].ToString();
+                    }
+                }
+            }
+
+            if (queue.Count != 0)
+                if (queue.Peek().Equals(check.ToString()))
+                    return true;
+
+            return false;
+
+{
+            Stream fs = new FileStream(@"1.txt", FileMode.Open, FileAccess.Read);
+            StreamReader sr = new StreamReader(fs);
+
+            dataGridView.Rows.Clear();
+            dataGridView.Columns.Clear();
+
+            string[] col;
+            string row = sr.ReadLine();
+
+            col = row.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            dataGridView.ColumnCount = col.Length;
+            dataGridView.Rows.Add(col);
+            row = sr.ReadLine();
+
+            string cell;
+            while (row != null)
+            {
+                col = row.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                dataGridView.Rows.Add(col);
+
+                cell = dataGridView.ColumnCount.ToString() + "." + dataGridView.RowCount.ToString();
+                myHash.Values[cell] = dataGridView[dataGridView.ColumnCount - 1, dataGridView.RowCount - 1].Value;
+                myHash.Formulas[cell] = myHash.Values[cell];
+                myHash.References[cell] = "";
+
+                row = sr.ReadLine();
+            }
+            for (int i = 0; i < dataGridView.RowCount; ++i)
+            {
+                dataGridView.Rows[i].HeaderCell.Value = (i).ToString();
+            }
+            for (int i = 0; i < dataGridView.ColumnCount; i++)
+            {
+                dataGridView.Columns[i].Name = f.ToSys(i);
+            }
+        }
+    }
+}
